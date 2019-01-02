@@ -23,18 +23,28 @@ class SelectorScreen extends Component {
             url: 'https://pokeapi.co/api/v2/pokemon/',
             imgPokeball: 'https://vignette.wikia.nocookie.net/inciclopedia/images/3/39/Pokeball.PNG/revision/latest?cb=20131217100606',
             imgBaseUrl: 'https://pokeapi.co/api/v2/pokemon-form/',
+            selectedPokemons: ['bulbasaur','bulbasaur','bulbasaur','bulbasaur','bulbasaur','bulbasaur'],
             selectedPokemon1: 'bulbasaur',
             selectedPokemon2: 'bulbasaur',
             selectedPokemon3: 'bulbasaur',
             selectedPokemon4: 'bulbasaur',
             selectedPokemon5: 'bulbasaur',
             selectedPokemon6: 'bulbasaur',
+            imgSelectedPokemons: 
+            [
+                'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+                'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+                'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+                'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+                'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+                'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729'
+            ],
             imgSelectedPokemon1: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
-            imgSelectedPokemon2: [],
-            imgSelectedPokemon3: [],
-            imgSelectedPokemon4: [],
-            imgSelectedPokemon5: [],
-            imgSelectedPokemon6: []
+            imgSelectedPokemon2: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+            imgSelectedPokemon3: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+            imgSelectedPokemon4: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+            imgSelectedPokemon5: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+            imgSelectedPokemon6: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729'
         }
 
     }
@@ -57,22 +67,30 @@ class SelectorScreen extends Component {
         });
     };
 
-    getImagePokemon = () => {
+    getImagePokemon = (pokemon, index) => {
         this.setState({loading:true})
 
-        fetch(this.state.imgBaseUrl + this.state.selectedPokemon1)
+        fetch(this.state.imgBaseUrl + pokemon)
         .then(res => res.json())
         .then( res => {
+            this.state.imgSelectedPokemons[index] = res.sprites.front_default;
+            let imgs = this.state.imgSelectedPokemons;
+            this.forceUpdate()
             this.setState({
-                imgSelectedPokemon1: res.sprites.front_default,
+                imgSelectedPokemons: imgs,
                 loading: false
             })
         });
     };
 
-    setSelectedPokemon(pokemon){
-        this.setState({selectedPokemon1: pokemon});
-        this.getImagePokemon();
+    setSelectedPokemon(pokemon, index){
+        this.state.selectedPokemons[index] = pokemon;
+        let pok = this.state.selectedPokemons;
+        this.forceUpdate()
+        this.setState({
+            selectedPokemons: pok
+        })
+        this.getImagePokemon(pokemon, index);
     }
 
     render() {
@@ -98,16 +116,16 @@ class SelectorScreen extends Component {
                         <Image 
                             style={{
                                 width: 75, height: 75}}
-                            source={{uri: this.state.imgSelectedPokemon1 }}
+                            source={{uri: this.state.imgSelectedPokemons[0] }}
                         />
                     </View>
 
                     <View style={styles.pickerCircleContainer}>
                         <Picker
                             mode="dropdown" 
-                            selectedValue={this.state.selectedPokemon1}
+                            selectedValue={this.state.selectedPokemons[0]}
                             style={{ width: 200, height: 50}}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue)}>
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 0)}>
                             {serviceItems}
                         </Picker>
                     </View>
@@ -118,16 +136,16 @@ class SelectorScreen extends Component {
                         <Image 
                             style={{
                                 width: 75, height: 75}}
-                            source={{uri: this.state.imgSelectedPokemon1}}
+                            source={{uri: this.state.imgSelectedPokemons[1]}}
                         />
                     </View>
 
                     <View style={styles.pickerCircleContainer}>
                         <Picker
                             mode="dropdown" 
-                            selectedValue={this.state.selectedPokemon1}
+                            selectedValue={this.state.selectedPokemons[1]}
                             style={{ width: 200, height: 50}}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue)}>
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 1)}>
                             {serviceItems}
                         </Picker>
                     </View>
@@ -138,16 +156,16 @@ class SelectorScreen extends Component {
                         <Image 
                             style={{
                                 width: 75, height: 75}}
-                            source={{uri: this.state.imgSelectedPokemon1}}
+                            source={{uri: this.state.imgSelectedPokemons[2]}}
                         />
                     </View>
 
                     <View style={styles.pickerCircleContainer}>
                         <Picker
                             mode="dropdown" 
-                            selectedValue={this.state.selectedPokemon1}
+                            selectedValue={this.state.selectedPokemons[2]}
                             style={{ width: 200, height: 50}}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue)}>
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 2)}>
                             {serviceItems}
                         </Picker>
                     </View>
@@ -158,16 +176,16 @@ class SelectorScreen extends Component {
                         <Image 
                             style={{
                                 width: 75, height: 75}}
-                            source={{uri: this.state.imgSelectedPokemon1}}
+                            source={{uri: this.state.imgSelectedPokemons[3]}}
                         />
                     </View>
 
                     <View style={styles.pickerCircleContainer}>
                         <Picker
                             mode="dropdown" 
-                            selectedValue={this.state.selectedPokemon1}
+                            selectedValue={this.state.selectedPokemons[3]}
                             style={{ width: 200, height: 50}}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue)}>
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 3)}>
                             {serviceItems}
                         </Picker>
                     </View>
@@ -178,16 +196,16 @@ class SelectorScreen extends Component {
                         <Image 
                             style={{
                                 width: 75, height: 75}}
-                            source={{uri: this.state.imgSelectedPokemon1}}
+                            source={{uri: this.state.imgSelectedPokemons[4]}}
                         />
                     </View>
 
                     <View style={styles.pickerCircleContainer}>
                         <Picker
                             mode="dropdown" 
-                            selectedValue={this.state.selectedPokemon1}
+                            selectedValue={this.state.selectedPokemons[4]}
                             style={{ width: 200, height: 50}}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue)}>
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 4)}>
                             {serviceItems}
                         </Picker>
                     </View>
@@ -198,16 +216,16 @@ class SelectorScreen extends Component {
                         <Image 
                             style={{
                                 width: 75, height: 75}}
-                            source={{uri: this.state.imgSelectedPokemon1}}
+                            source={{uri: this.state.imgSelectedPokemons[5]}}
                         />
                     </View>
 
                     <View style={styles.pickerCircleContainer}>
                         <Picker
                             mode="dropdown" 
-                            selectedValue={this.state.selectedPokemon1}
+                            selectedValue={this.state.selectedPokemons[5]}
                             style={{ width: 200, height: 50}}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue)}>
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 5)}>
                             {serviceItems}
                         </Picker>
                     </View>
