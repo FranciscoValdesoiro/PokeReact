@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Button from 'apsl-react-native-button';
 
-
 const { width: WIDTH} = Dimensions.get('window')
 
 class SelectorScreen extends Component {
