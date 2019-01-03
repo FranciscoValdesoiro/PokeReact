@@ -20,9 +20,9 @@ class SelectorScreen extends Component {
             loading: false,
             pokemon: [],
             url: 'https://pokeapi.co/api/v2/pokemon/',
-            imgPokeball: 'https://vignette.wikia.nocookie.net/inciclopedia/images/3/39/Pokeball.PNG/revision/latest?cb=20131217100606',
+            imgPokeball: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
             imgBaseUrl: 'https://pokeapi.co/api/v2/pokemon-form/',
-            selectedPokemons: ['bulbasaur','bulbasaur','bulbasaur','bulbasaur','bulbasaur','bulbasaur'],
+            selectedPokemons: ['Select Pokemon','Select Pokemon','Select Pokemon','Select Pokemon','Select Pokemon','Select Pokemon'],
             selectedPokemon1: 'bulbasaur',
             selectedPokemon2: 'bulbasaur',
             selectedPokemon3: 'bulbasaur',
@@ -67,7 +67,7 @@ class SelectorScreen extends Component {
     };
 
     getImagePokemon = (pokemon, index) => {
-        this.setState({loading:true})
+        //this.setState({loading:true})
 
         fetch(this.state.imgBaseUrl + pokemon)
         .then(res => res.json())
@@ -76,20 +76,28 @@ class SelectorScreen extends Component {
             let imgs = this.state.imgSelectedPokemons;
             this.forceUpdate()
             this.setState({
-                imgSelectedPokemons: imgs,
-                loading: false
+                imgSelectedPokemons: imgs
+                //loading: false
             })
         });
     };
 
     setSelectedPokemon(pokemon, index){
-        this.state.selectedPokemons[index] = pokemon;
-        let pok = this.state.selectedPokemons;
-        this.forceUpdate()
-        this.setState({
-            selectedPokemons: pok
-        })
-        this.getImagePokemon(pokemon, index);
+        if(pokemon != "Select Pokemon"){
+            this.state.selectedPokemons[index] = pokemon;
+            let pok = this.state.selectedPokemons;
+            this.forceUpdate()
+            this.setState({
+                selectedPokemons: pok
+            })
+            this.getImagePokemon(pokemon, index);
+        }
+        else
+        {
+            this.state.imgSelectedPokemons[index] = this.state.imgPokeball;
+            this.state.selectedPokemons[index] = pokemon;
+            //this.setState({loading:false})
+        }
     }
 
     render() {
@@ -125,6 +133,7 @@ class SelectorScreen extends Component {
                             selectedValue={this.state.selectedPokemons[0]}
                             style={{ width: 200, height: 50}}
                             onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 0)}>
+                            <Picker.Item value="Select Pokemon" label="Select Pokemon" />
                             {serviceItems}
                         </Picker>
                     </View>
@@ -145,6 +154,7 @@ class SelectorScreen extends Component {
                             selectedValue={this.state.selectedPokemons[1]}
                             style={{ width: 200, height: 50}}
                             onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 1)}>
+                            <Picker.Item value="Select Pokemon" label="Select Pokemon" />
                             {serviceItems}
                         </Picker>
                     </View>
@@ -165,6 +175,7 @@ class SelectorScreen extends Component {
                             selectedValue={this.state.selectedPokemons[2]}
                             style={{ width: 200, height: 50}}
                             onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 2)}>
+                            <Picker.Item value="Select Pokemon" label="Select Pokemon" />
                             {serviceItems}
                         </Picker>
                     </View>
@@ -185,6 +196,7 @@ class SelectorScreen extends Component {
                             selectedValue={this.state.selectedPokemons[3]}
                             style={{ width: 200, height: 50}}
                             onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 3)}>
+                            <Picker.Item value="Select Pokemon" label="Select Pokemon" />
                             {serviceItems}
                         </Picker>
                     </View>
@@ -205,6 +217,7 @@ class SelectorScreen extends Component {
                             selectedValue={this.state.selectedPokemons[4]}
                             style={{ width: 200, height: 50}}
                             onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 4)}>
+                            <Picker.Item value="Select Pokemon" label="Select Pokemon" />
                             {serviceItems}
                         </Picker>
                     </View>
@@ -225,6 +238,7 @@ class SelectorScreen extends Component {
                             selectedValue={this.state.selectedPokemons[5]}
                             style={{ width: 200, height: 50}}
                             onValueChange={(itemValue, itemIndex) => this.setSelectedPokemon(itemValue, 5)}>
+                            <Picker.Item value="Select Pokemon" label="Select Pokemon" />
                             {serviceItems}
                         </Picker>
                     </View>
