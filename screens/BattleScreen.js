@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, ImageBackground,Animated, Dimensions, View, Text, Image, TextInput} from 'react-native';
 import Button from 'apsl-react-native-button';
-
+import * as Progress from 'react-native-progress';
 
 const { width: WIDTH} = Dimensions.get('window')
 const { height: HEIGHT} = Dimensions.get('window')
@@ -16,9 +16,15 @@ class BattleScreen extends Component {
         this.begin = this.begin.bind(this);
         this.hitEnemy = this.hitEnemy.bind(this);
 
+
         this.state = {
             animated: new Animated.Value(0.5),
-            loading: false
+            loading: false,
+            firstPokemon: "Select Pokemon",
+            url: 'https://pokeapi.co/api/v2/pokemon/',
+            imgPokeball: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+            imgBaseUrl: 'https://pokeapi.co/api/v2/pokemon-form/',
+            imgSelectedPokemon: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729'
         }
     }
 
@@ -27,11 +33,50 @@ class BattleScreen extends Component {
         this.animatedValue2 = new Animated.Value(0.5);
         this.myAttackValue1 = new Animated.Value(0.5);
         this.myAttackValue2 = new Animated.Value(0.5);
+        this.getPokemon(this.props.navigation.state.params.firstPokemon);
     }
 
     componentDidMount(){
-        
     }
+
+    setSelectedPokemon(pokemon){
+        if(pokemon != "Select Pokemon"){
+            this.state.firstPokemon = pokemon;
+            this.forceUpdate()
+            this.setState({
+                firstPokemon: pokemon
+            })
+            this.getImagePokemon(pokemon);
+        }
+        else
+        {
+            this.state.imgSelectedPokemon = this.state.imgPokeball;
+        }
+    }
+
+    getPokemon(pokemon){
+        
+        this.setState({loading:true})
+        fetch(this.state.imgBaseUrl + pokemon)
+        .then(res => res.json())
+        .then( res => {
+            this.setState({
+                imgSelectedPokemon: res.sprites.back_default,
+                url: res.next,
+                loading: false
+            })
+        });
+        this.forceUpdate()
+        if(pokemon != "Select Pokemon"){
+            this.setState({
+                firstPokemon: pokemon
+            })
+        }
+        else
+        {
+            this.state.imgSelectedPokemon = this.state.imgPokeball;
+        }
+    };
 
     hitEnemy(){
         Animated.sequence(
@@ -138,7 +183,8 @@ class BattleScreen extends Component {
     }
 
     begin(){
-        
+        this.getImagePokemon();
+
         /*
         Alert.alert(
             'Alert Title',
@@ -179,6 +225,13 @@ class BattleScreen extends Component {
  
     render() {
 
+
+        if(this.state.loading){
+            return(
+                <Text>Cargando</Text>
+            );
+        }
+
         return (
 
             <ImageBackground style={ styles.imgBackground } 
@@ -189,7 +242,30 @@ class BattleScreen extends Component {
 
                 <View style={{ flexDirection: 'row', backgroundColor: 'red'}}>
 
-                    <View style={{width: WIDTH/2, height: HEIGHT/2, backgroundColor: 'red'}}>
+                    <View style={{width: WIDTH/2, height: HEIGHT/4, backgroundColor: 'red'}}>
+
+                        <View style={styles.contentInfoPokemon}>
+                                    
+
+                                    <View style={styles.infoPokemon}>
+                                            <Text>CustomName</Text>
+                                            <Text>Lv:11</Text>
+                                    </View>
+
+                                    <View style={styles.infoPokemon}>
+                                        <Progress.Bar progress={1} width={180}  color='green'/>
+
+                                    </View>
+
+                                    <View style={styles.lifeInfoPokemon}>
+                                            <Text>26/26</Text>
+                                    </View>
+
+
+
+
+
+                            </View>
 
                     </View>
 
@@ -244,7 +320,7 @@ class BattleScreen extends Component {
                                             })
                                         },
                                     ]}}
-                                    source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+                                    source={{uri: this.state.imgSelectedPokemon}}
                             />
                         </View>
 
@@ -258,11 +334,32 @@ class BattleScreen extends Component {
 
                     <View style={{width: WIDTH/2, height: HEIGHT/2, backgroundColor: 'yellow'}}>
                         
-                        <View style={{ width: WIDTH/2, height: HEIGHT/4, backgroundColor: 'yellow', alignItems: 'center', }}>
+                        <View style={{ flexDirection:'column', justifyContent:'center', width: WIDTH/2, height: HEIGHT/4, backgroundColor: 'yellow', alignItems: 'center', }}>
                             
-                            <View style={styles.infoPokemon}>
+
+                            <View style={styles.contentInfoPokemon}>
+                                    
+
+                                    <View style={styles.infoPokemon}>
+                                            <Text>CustomName</Text>
+                                            <Text>Lv:11</Text>
+                                    </View>
+
+                                    <View style={styles.infoPokemon}>
+                                        <Progress.Bar progress={1} width={180}  color='green'/>
+
+                                    </View>
+
+                                    <View style={styles.lifeInfoPokemon}>
+                                            <Text>26/26</Text>
+                                    </View>
+
+
+
+
 
                             </View>
+
                                 
                         </View>
 
@@ -349,8 +446,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black'
     },
-    infoPokemon: {
-
+    contentInfoPokemon: {
+        flex:0.7,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10,
         width: WIDTH / 2,
         height: HEIGHT/ 2,
         textAlign: 'center',
@@ -361,6 +462,30 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         fontSize: 16,
         backgroundColor: 'white',
+    },
+    infoPokemon: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: WIDTH / 2,
+        paddingHorizontal: 10,
+
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    lifeInfoPokemon: {
+        
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        width: WIDTH / 2,
+        height: HEIGHT/ 2,
+        textAlign: 'center',
+        alignItems: 'center', 
+        height: 45,
+        fontSize: 16,
     },
     imgBackground: {
         width: '100%',

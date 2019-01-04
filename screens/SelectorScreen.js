@@ -23,12 +23,14 @@ class SelectorScreen extends Component {
             imgPokeball: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
             imgBaseUrl: 'https://pokeapi.co/api/v2/pokemon-form/',
             selectedPokemons: ['Select Pokemon','Select Pokemon','Select Pokemon','Select Pokemon','Select Pokemon','Select Pokemon'],
-            selectedPokemon1: 'bulbasaur',
-            selectedPokemon2: 'bulbasaur',
-            selectedPokemon3: 'bulbasaur',
-            selectedPokemon4: 'bulbasaur',
-            selectedPokemon5: 'bulbasaur',
-            selectedPokemon6: 'bulbasaur',
+            pokeName: "",
+            pokeAttack1: "",
+            pokeAttack2: "",
+            pokeAttack3: "",
+            pokeAttack4: "",
+            pokeImage1: "",
+            pokeImageBack1: "",
+
             imgSelectedPokemons: 
             [
                 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
@@ -37,13 +39,7 @@ class SelectorScreen extends Component {
                 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
                 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
                 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729'
-            ],
-            imgSelectedPokemon1: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
-            imgSelectedPokemon2: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
-            imgSelectedPokemon3: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
-            imgSelectedPokemon4: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
-            imgSelectedPokemon5: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
-            imgSelectedPokemon6: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729'
+            ]
         }
 
     }
@@ -62,6 +58,22 @@ class SelectorScreen extends Component {
                 pokemon: res.results,
                 url: res.next,
                 loading: false
+            })
+        });
+    };
+
+    setDataFirstSelectedPokemon = (pokemon, index) => {
+        //this.setState({loading:true})
+
+        fetch(url + pokemon)
+        .then(res => res.json())
+        .then( res => {
+            this.forceUpdate()
+            this.setState({
+                pokeName: res.forms.name, 
+                pokeImageFront1: res.sprites.front_default,
+                pokeImageBack1: res.sprites.back_default,
+                //loading: false
             })
         });
     };
@@ -245,7 +257,12 @@ class SelectorScreen extends Component {
                 </View>
 
                 <View>
-                    <Button style={styles.loginButton} onPress={() => this.props.navigation.navigate('Battle')}>
+                    <Button style={styles.loginButton} onPress={() => this.props.navigation.navigate('Battle', {
+                            firstPokemon: this.state.selectedPokemons[0],
+                            firstPokeName: this.state.pokeName,
+                            firstPokeImageFront: this.state.pokeImageFront1,
+                            firstPokeImageBack: this.state.pokeImageBack1,                            
+                            })}>
                         <Text style={styles.loginText}>Confirm Pokemons</Text>
                     </Button>
                     <Button style={styles.cancelButton} onPress={() => this.props.navigation.goBack()}>
