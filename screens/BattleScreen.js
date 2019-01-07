@@ -24,7 +24,9 @@ class BattleScreen extends Component {
             url: 'https://pokeapi.co/api/v2/pokemon/',
             imgPokeball: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
             imgBaseUrl: 'https://pokeapi.co/api/v2/pokemon-form/',
-            imgSelectedPokemon: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729'
+            imgSelectedPokemon: 'https://vignette.wikia.nocookie.net/bonkio/images/a/ab/Skin_-_Pokeball.png/revision/latest?cb=20180114194729',
+            imgPokemonEnemy: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + String(parseInt(Math.random() * 501)) + '.png'
+
         }
     }
 
@@ -37,6 +39,10 @@ class BattleScreen extends Component {
     }
 
     componentDidMount(){
+    }
+
+    getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
     }
 
     setSelectedPokemon(pokemon){
@@ -240,7 +246,7 @@ class BattleScreen extends Component {
 
             <View style={styles.container}>
 
-                <View style={{ flexDirection: 'row', backgroundColor: 'red'}}>
+                <View style={{ flexDirection: 'row'}}>
 
                     <View style={{width: WIDTH/2, height: HEIGHT/4, backgroundColor: 'red'}}>
 
@@ -290,7 +296,7 @@ class BattleScreen extends Component {
                                         },
 
                                     ]}}
-                                    source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+                                    source={{uri: this.state.imgPokemonEnemy}}
                             />
 
                     </View>
