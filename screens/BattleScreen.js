@@ -84,6 +84,33 @@ class BattleScreen extends Component {
         }
     };
 
+    hitMe(){
+        Animated.sequence(
+            [
+            Animated.timing(this.myAttackValue1,{
+                toValue:0.5,
+                duration:100,
+            }),
+            Animated.timing(this.myAttackValue1,{
+                toValue:0.5,
+                duration:1000,
+            }),
+             Animated.timing(this.myAttackValue1,{
+                 toValue:0.4,
+                 duration:50,
+             }),
+             Animated.timing(this.myAttackValue1,{
+                 toValue:0.6,
+                 duration:50,
+             }),
+             Animated.timing(this.myAttackValue1,{
+                 toValue:0.5,
+                 duration:50,
+             })
+            ]
+         ).start();              
+    }
+
     hitEnemy(){
         Animated.sequence(
             [
@@ -147,6 +174,7 @@ class BattleScreen extends Component {
                 ]
              )
         ]).start();
+        this.hitMe();
     }
 
     myAttack(){
